@@ -224,27 +224,11 @@ Responsibilities of each component:
 
 The design is **modular**: each block can be improved or swapped independently, which is exactly how we'd evolve from MVP to product.
 
----
 
-## 12. Challenges and Limitations
-
-We're upfront about the hard parts — and for each, the path forward.
-
-- **Image quality and lighting.** Blurry, dark, or reflective photos hurt detection. → *Guide the user to take clearer photos, validate image quality before analysis, and train on augmented (varied-lighting) data.*
-- **Different camera angles.** The same damage looks different from different viewpoints. → *Use multi-angle training data and, in future, fuse multiple photos of the same damage.*
-- **Hidden internal damage.** A photo cannot show bent frames or mechanical damage. → *State this limitation clearly; future work can combine photos with other signals (sensor/OBD data, repair history).*
-- **Similar-looking vehicle models.** Many cars look alike, so make/model can be wrong. → *Treat it as a correctable best guess and let the user confirm; improve with better recognition models over time.*
-- **Regional price differences.** A part costs differently across markets. → *Prioritize local marketplaces and make region a configurable input.*
-- **Rapidly changing online prices.** Listings move fast. → *Query at assessment time, present a range, and timestamp the estimate.*
-- **Parts availability.** A part may be out of stock or rare. → *Show multiple condition options (new/used/aftermarket) and flag low availability.*
-- **Model confidence and false detections.** No model is perfect; it can miss or hallucinate damage. → *Always display confidence scores, set sensible thresholds, and keep the human in the loop.*
-- **Visible vs. actual mechanical damage.** What looks minor may be serious underneath (and vice versa). → *Frame every output as preliminary and recommend professional confirmation.*
-
-The honest summary: this is a **decision-support tool with known boundaries**, and we design the UX so the user always understands those boundaries.
 
 ---
 
-## 13. Future Improvements
+## 12. Future Improvements
 
 *(All items below are future work, beyond the current MVP.)*
 
@@ -259,31 +243,6 @@ The honest summary: this is a **decision-support tool with known boundaries**, a
 - **Internal/mechanical damage detection** — using sensor, OBD, or history data alongside photos.
 - **Broader coverage** — more vehicle brands, more part categories, more damage types.
 
----
-
-## 14. Jury Presentation Speech *(≈3–4 minutes)*
-
-> Deliver this naturally. Pause after the problem and after the example. Make eye contact on the disclaimer — juries reward honesty.
-
-Good [morning / afternoon], everyone. Thank you for the chance to present our project.
-
-Let me start with a moment most drivers know too well. You've just had a small accident. No one is hurt — but your car is damaged, and immediately the questions begin. Which parts are actually broken? How serious is it? How much will this cost to fix? You call one repair shop and get one price. You call another and get a completely different one. You feel uncertain, and honestly, a little powerless.
-
-This is the problem our project solves. We built **[App Name]**, an AI-powered car damage assessment application. The idea is simple: take a photo of the damage, and in seconds get a clear, preliminary assessment of what is damaged and what it might cost.
-
-Here is how it works. The user uploads one or more photos of the car after an accident, and our system does several things. First, it recognizes basic information about the vehicle — the color, and where possible the make and model. Second, it detects the damaged areas and draws boxes around them, so you can see exactly what the AI is looking at. Third, it identifies which part is affected — the bumper, the door, the headlight. And fourth, it classifies the type of damage — is it a dent, a scratch, or a crack? Every detection comes with a confidence score, so the user always knows how sure the system is.
-
-Then comes the part that makes us different. Most damage-detection projects stop at "here is the damage." We go one step further. Once we know the part and the type of damage, our system searches online marketplaces for the price of that part — new, used, or aftermarket. It combines that with an estimated labor cost and, importantly for our region, delivery and customs costs. The result is an indicative price range, from a minimum to a maximum, plus a simple recommendation: is this damage better repaired, or is replacement the smarter option? Finally, everything is collected into a clean digital report the user can save or share.
-
-Let me give a quick example. Imagine someone uploads a photo of a Toyota Corolla with a damaged front bumper. Our app recognizes the car, detects a dent and a scratch on the bumper, identifies the part, and searches for compatible bumper prices. It then shows a repair estimate in one range, a replacement estimate in another, and a recommendation. In under a minute, the driver goes from total uncertainty to a clear starting point.
-
-Now, I want to be honest about what this is — and what it is not. Our application gives a *preliminary*, AI-based assessment. It does not replace a professional mechanic, an insurance expert, or an official inspection. A photo cannot show hidden mechanical damage, and online prices change. That's why we present a *range*, not a guaranteed number, and why we always show confidence levels.
-
-But the value is real. Faster initial assessment. Far more price transparency. Less dependence on one shop's subjective estimate. And it's useful not only for individual drivers, but for insurance companies doing pre-assessment, for repair shops, for rental and fleet companies, and for used-car marketplaces.
-
-Looking ahead, we see a clear path: damage-severity scoring, video and multi-angle analysis, VIN-based identification, and direct integration with insurers and local repair shops.
-
-In short, we set out to answer one stressful question — *"what's damaged, and what will it cost?"* — quickly, transparently, and in a way anyone can use. That is what **[App Name]** does.
 
 Thank you. We'd be happy to take your questions.
 
