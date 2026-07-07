@@ -1,7 +1,3 @@
-Watch Out monitors workplace video feeds and automatically detects PPE violations in real time. When a worker is missing required equipment for a sustained period, the system confirms the incident, saves evidence, and sends an alert — so safety supervisors are notified the moment a violation occurs, not after the fact.
-
-Built by AREA-42 as a simplified VSS-style pipeline: frame sampling → NVIDIA-hosted VLM → incident logic → notifications.
-
 Current Status
 Component	Status	Notes
 Frame extraction from video	✅ Working	OpenCV, configurable interval
