@@ -66,8 +66,8 @@ crashlogic/
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/<your-org>/crashlogic.git
-cd crashlogic
+git clone https://github.com/XalidAhmadov/casco.git
+cd casco
 
 # 2. Create and activate a virtual environment
 python -m venv venv
