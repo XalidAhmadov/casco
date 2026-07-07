@@ -251,9 +251,10 @@ Price data is maintained in this repo as CSVs:
 
 CrashLogic · Data & AI · 2026
 
-- _Your name_
-- _Teammate_
-- _Teammate_
+- Ilaha Shafizada
+- Nurana Aliyarli
+- Ravan Khanbabayev
+- Khalid Ahmadov
 
 GitHub Organization · Project Board
 
