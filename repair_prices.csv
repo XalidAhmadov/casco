@@ -1,0 +1,9 @@
+action_code,action_az,action_en,price_min_azn,price_avg_azn,price_max_azn,price_type
+polish,Cilalama,Polish / buff out,20,40,70,estimate
+paint_panel,Rəng (panel),Repaint panel,60,120,200,estimate
+pdr,PDR (rəngsiz düzəltmə),Paintless dent repair,30,70,120,estimate
+dent_paint,Düzəltmə + rəng,Dent repair + repaint,90,160,260,estimate
+plastic_repair,Plastik təmir + rəng,Plastic weld/repair + paint,50,100,160,estimate
+wheel_refinish,Disk bərpası,Rim refinish,40,80,120,estimate
+tire_patch,Şin təmiri (yamaq),Tire patch,10,20,30,estimate
+glass_polish,Şüşə cilalama,Glass polish,25,45,80,estimate
