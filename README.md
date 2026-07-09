@@ -5,7 +5,7 @@
 ![Models](https://img.shields.io/badge/models-YOLOv11--seg%20%C3%97%202-orange)
 ![Agent](https://img.shields.io/badge/agent-Gemini%202.5%20Flash-purple)
 
-CrashLogic analyzes a photo of a damaged car and produces an **itemized repair-cost estimate calibrated to the Azerbaijani market**. Two computer-vision models work together — one identifies **which part** is damaged, the other classifies the **type of damage** (scratch / dent / crack / …). A fusion step maps each damage onto the part it sits on, and a recommendation engine decides **repair vs. replacement** and prices it from a local parts + labor database.
+CasCo analyzes a photo of a damaged car and produces an **itemized repair-cost estimate calibrated to the Azerbaijani market**. Two computer-vision models work together — one identifies **which part** is damaged, the other classifies the **type of damage** (scratch / dent / crack / …). A fusion step maps each damage onto the part it sits on, and a recommendation engine decides **repair vs. replacement** and prices it from a local parts + labor database.
 
 Built as a two-stage segmentation pipeline: **part segmentation + damage segmentation → fusion → repair/replace recommendation → cost.**
 
