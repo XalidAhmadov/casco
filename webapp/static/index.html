@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CrashLogic — DentScan</title>
+<link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-mark">◢</span>
+    <span class="brand-name">Crash<b>Logic</b></span>
+    <span class="brand-sub" data-i18n="tagline"></span>
+  </div>
+  <nav class="tabs" role="tablist">
+    <button class="tab active" data-tab="analyze" role="tab" data-i18n="tab_analyze"></button>
+    <button class="tab" data-tab="chat" role="tab" data-i18n="tab_chat"></button>
+  </nav>
+  <div class="lang-toggle" role="group" aria-label="Language">
+    <button class="lang active" data-lang="az">AZ</button>
+    <button class="lang" data-lang="en">EN</button>
+  </div>
+</header>
+
+<!-- ── Damage analysis ─────────────────────────────────────────────── -->
+<main id="panel-analyze" class="panel active">
+  <section class="col form-col">
+    <div class="card">
+      <h2 data-i18n="upload_title"></h2>
+      <div id="dropzone" class="dropzone" tabindex="0">
+        <input type="file" id="file-input" accept="image/*" hidden>
+        <img id="preview" alt="" hidden>
+        <div id="drop-hint" class="drop-hint">
+          <span class="drop-icon">🖼</span>
+          <span data-i18n="drop_hint"></span>
+        </div>
+      </div>
+
+      <label class="field"><span data-i18n="brand"></span>
+        <select id="sel-brand"></select>
+      </label>
+      <label class="field"><span data-i18n="model"></span>
+        <select id="sel-model"></select>
+      </label>
+      <label class="field"><span data-i18n="year"></span>
+        <select id="sel-year"></select>
+      </label>
+
+      <button id="btn-analyze" class="btn-primary" disabled>
+        <span class="spinner" hidden></span>
+        <span data-i18n="analyze"></span>
+      </button>
+      <p class="disclaimer" data-i18n="disclaimer"></p>
+      <p id="analyze-error" class="error" hidden></p>
+    </div>
+  </section>
+
+  <section class="col results-col">
+    <div id="results-empty" class="card empty-state">
+      <span class="empty-icon">🚗</span>
+      <p data-i18n="results_empty"></p>
+    </div>
+
+    <div id="results" hidden>
+      <div class="card">
+        <h2 id="vehicle-title"></h2>
+        <img id="annotated-img" class="annotated" alt="annotated damage">
+      </div>
+
+      <div class="card">
+        <h2 data-i18n="findings_title"></h2>
+        <div id="findings"></div>
+        <p id="orphans" class="orphan-strip" hidden></p>
+        <p id="no-damage" class="empty-note" hidden data-i18n="no_damage"></p>
+      </div>
+
+      <div class="card totals" id="totals-card" hidden>
+        <div class="stat-hero">
+          <span class="stat-label" data-i18n="total_label"></span>
+          <span class="stat-value"><span id="total-avg"></span><span class="unit"> AZN</span></span>
+          <span class="stat-range"><span data-i18n="range"></span>: <span id="total-range"></span> AZN</span>
+        </div>
+        <div class="stat-row">
+          <div class="stat-tile">
+            <span class="stat-label" data-i18n="replace_all"></span>
+            <span class="stat-value sm">~<span id="replace-all"></span> AZN</span>
+          </div>
+          <div class="stat-tile">
+            <span class="stat-label" data-i18n="savings"></span>
+            <span class="stat-value sm savings">−<span id="savings"></span> AZN</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ── Price chat ──────────────────────────────────────────────────── -->
+<main id="panel-chat" class="panel">
+  <div class="chat-wrap card">
+    <div id="chat-log" class="chat-log">
+      <div class="msg agent" data-i18n="chat_welcome"></div>
+    </div>
+    <form id="chat-form" class="chat-input">
+      <input id="chat-text" type="text" autocomplete="off" data-i18n-ph="chat_placeholder">
+      <button type="submit" class="btn-primary" data-i18n="send"></button>
+    </form>
+    <p class="disclaimer" data-i18n="disclaimer"></p>
+  </div>
+</main>
+
+<script src="/static/app.js"></script>
+</body>
+</html>

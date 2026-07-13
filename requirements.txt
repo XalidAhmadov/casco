@@ -4,3 +4,6 @@ opencv-python
 google-genai
 python-dotenv
 huggingface_hub
+fastapi
+uvicorn
+python-multipart

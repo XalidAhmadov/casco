@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+venv/
+.env
+
+# scratch/test outputs
+_selftest*.jpg
+zede*.jpg
+webapp/outputs/
+files.zip
+parts_best_org.pt
