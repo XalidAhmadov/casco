@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zədə icmalı — CrashLogic</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%236a5cff'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='Arial'>✦</text></svg>">
+</head>
+<body>
+<div class="app-frame">
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="app-side">
+    <a class="side-brand brand" href="index.html">
+      <span class="brand-mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.6L22 12l-7.6 2.4L12 22l-2.4-7.6L2 12l7.6-2.4z"/></svg>
+      </span>
+      CrashLogic
+    </a>
+    <div class="side-tagline" data-i18n="tagline"></div>
+
+    <nav class="side-nav">
+      <a href="upload.html" class="active">
+        <span class="nav-ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.6L22 12l-7.6 2.4L12 22l-2.4-7.6L2 12l7.6-2.4z"/></svg></span>
+        <span data-i18n="nav_analyze"></span>
+      </a>
+      <a href="chat.html">
+        <span class="nav-ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.5 8.5 0 01-8.5 8.5 8.4 8.4 0 01-3.9-.9L3 20l1-4.5A8.5 8.5 0 1121 11.5z"/></svg></span>
+        <span data-i18n="nav_chat"></span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- ============ TOPBAR ============ -->
+  <header class="app-top">
+    <nav class="top-links"></nav>
+    <div class="top-tools">
+      <div class="lang-toggle" role="group" aria-label="Language">
+        <button class="active" data-lang="az">AZ</button>
+        <button data-lang="en">EN</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============ MAIN ============ -->
+  <main class="app-main">
+    <div class="main-head">
+      <h1 data-i18n="page_title2"></h1>
+      <div class="step-pills">
+        <a class="pill" href="upload.html"><span class="p-num">1</span></a>
+        <span class="pill active"><span class="p-num">2</span> <span data-i18n="step2"></span></span>
+      </div>
+    </div>
+
+    <!-- Empty state: no report in this browser session yet -->
+    <div id="empty-state" class="panel empty-state">
+      <span class="empty-icon">🚗</span>
+      <p data-i18n="results_empty"></p>
+      <a class="btn btn-primary" href="upload.html" data-i18n="go_upload"></a>
+    </div>
+
+    <!-- Populated once a report is loaded from sessionStorage -->
+    <div class="dash-grid" id="report" hidden>
+      <!-- LEFT: damage information -->
+      <section class="panel">
+        <h2 data-i18n="damage_info"></h2>
+        <div class="info-tiles" id="info-tiles"></div>
+
+        <div class="dash-body">
+          <nav class="parts-nav" id="parts-nav"></nav>
+
+          <div class="viewer">
+            <div>
+              <h2 data-i18n="photos_title" style="margin-bottom: 14px;"></h2>
+              <div class="gallery" id="gallery"></div>
+            </div>
+            <div>
+              <h2 data-i18n="findings_title" style="margin-bottom: 14px;"></h2>
+              <div id="findings-list"></div>
+              <p class="orphan-strip" id="orphans" hidden></p>
+              <p class="empty-note" id="no-damage" hidden data-i18n="no_damage"></p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- RIGHT: general information -->
+      <aside class="panel gen-info">
+        <div class="gen-head">
+          <h2 id="vehicle-title" style="margin-bottom: 0;"></h2>
+        </div>
+        <div class="gen-sub" id="vehicle-sub"></div>
+
+        <div>
+          <div class="sub-head"><span data-i18n="uploaded_photos"></span> (<span id="photo-count">0</span>)</div>
+          <div class="photo-grid" id="photo-grid"></div>
+        </div>
+
+        <a class="btn btn-primary btn-block checkout-btn" href="upload.html" data-i18n="new_analysis"></a>
+      </aside>
+    </div>
+  </main>
+</div>
+
+<script src="js/app.js"></script>
+</body>
+</html>

@@ -1,116 +1,232 @@
 <!DOCTYPE html>
 <html lang="az">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CrashLogic — DentScan</title>
-<link rel="stylesheet" href="/static/styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CrashLogic — AI ilə zədə qiymətləndirilməsi</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%236a5cff'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='Arial'>✦</text></svg>">
 </head>
 <body>
 
-<header class="topbar">
-  <div class="brand">
-    <span class="brand-mark">◢</span>
-    <span class="brand-name">Crash<b>Logic</b></span>
-    <span class="brand-sub" data-i18n="tagline"></span>
-  </div>
-  <nav class="tabs" role="tablist">
-    <button class="tab active" data-tab="analyze" role="tab" data-i18n="tab_analyze"></button>
-    <button class="tab" data-tab="chat" role="tab" data-i18n="tab_chat"></button>
-  </nav>
-  <div class="lang-toggle" role="group" aria-label="Language">
-    <button class="lang active" data-lang="az">AZ</button>
-    <button class="lang" data-lang="en">EN</button>
-  </div>
-</header>
-
-<!-- ── Damage analysis ─────────────────────────────────────────────── -->
-<main id="panel-analyze" class="panel active">
-  <section class="col form-col">
-    <div class="card">
-      <h2 data-i18n="upload_title"></h2>
-      <div id="dropzone" class="dropzone" tabindex="0">
-        <input type="file" id="file-input" accept="image/*" hidden>
-        <img id="preview" alt="" hidden>
-        <div id="drop-hint" class="drop-hint">
-          <span class="drop-icon">🖼</span>
-          <span data-i18n="drop_hint"></span>
-        </div>
-      </div>
-
-      <label class="field"><span data-i18n="brand"></span>
-        <select id="sel-brand"></select>
-      </label>
-      <label class="field"><span data-i18n="model"></span>
-        <select id="sel-model"></select>
-      </label>
-      <label class="field"><span data-i18n="year"></span>
-        <select id="sel-year"></select>
-      </label>
-
-      <button id="btn-analyze" class="btn-primary" disabled>
-        <span class="spinner" hidden></span>
-        <span data-i18n="analyze"></span>
-      </button>
-      <p class="disclaimer" data-i18n="disclaimer"></p>
-      <p id="analyze-error" class="error" hidden></p>
+  <!-- ============ NAV ============ -->
+  <header class="nav">
+    <a class="brand" href="index.html">
+      <span class="brand-mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.6L22 12l-7.6 2.4L12 22l-2.4-7.6L2 12l7.6-2.4z"/></svg>
+      </span>
+      CrashLogic
+    </a>
+    <nav class="nav-links">
+      <a href="#benefits">Üstünlüklər</a>
+      <a href="#how-it-works">Necə işləyir</a>
+      <a href="#technologies">Texnologiya</a>
+      <a href="#key-features">Əsas imkanlar</a>
+    </nav>
+    <div class="nav-cta">
+      <a class="contact" href="chat.html">Qiymət çatı</a>
+      <a class="btn btn-ghost btn-sm" href="upload.html">Analizə başla</a>
     </div>
-  </section>
+  </header>
 
-  <section class="col results-col">
-    <div id="results-empty" class="card empty-state">
-      <span class="empty-icon">🚗</span>
-      <p data-i18n="results_empty"></p>
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <h1>Sürətli <span class="marker">Zədə</span><br>Qiymətləndirilməsi — Dəqiqələr İçində</h1>
+    <p class="sub">Zədənin şəklini yükləyin — AI hissə-hissə zədəni müəyyən edir və Bakı bazarına uyğun təmir/əvəzləmə qiymətini dərhal hesablayır.</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="upload.html">Pulsuz başla</a>
+      <a class="btn btn-ghost" href="#how-it-works">Necə işləyir</a>
     </div>
-
-    <div id="results" hidden>
-      <div class="card">
-        <h2 id="vehicle-title"></h2>
-        <img id="annotated-img" class="annotated" alt="annotated damage">
-      </div>
-
-      <div class="card">
-        <h2 data-i18n="findings_title"></h2>
-        <div id="findings"></div>
-        <p id="orphans" class="orphan-strip" hidden></p>
-        <p id="no-damage" class="empty-note" hidden data-i18n="no_damage"></p>
-      </div>
-
-      <div class="card totals" id="totals-card" hidden>
-        <div class="stat-hero">
-          <span class="stat-label" data-i18n="total_label"></span>
-          <span class="stat-value"><span id="total-avg"></span><span class="unit"> AZN</span></span>
-          <span class="stat-range"><span data-i18n="range"></span>: <span id="total-range"></span> AZN</span>
-        </div>
-        <div class="stat-row">
-          <div class="stat-tile">
-            <span class="stat-label" data-i18n="replace_all"></span>
-            <span class="stat-value sm">~<span id="replace-all"></span> AZN</span>
-          </div>
-          <div class="stat-tile">
-            <span class="stat-label" data-i18n="savings"></span>
-            <span class="stat-value sm savings">−<span id="savings"></span> AZN</span>
-          </div>
-        </div>
+    <div class="hero-preview">
+      <div class="preview-glow"></div>
+      <div class="preview-frame-wrap" style="height: 520px; overflow: hidden;">
+        <iframe src="dashboard.html" title="Zədə qiymətləndirmə paneli" scrolling="no"
+          style="width: 143%; height: 780px; border: 0; transform: scale(0.7); transform-origin: top left; pointer-events: none;"></iframe>
       </div>
     </div>
   </section>
-</main>
 
-<!-- ── Price chat ──────────────────────────────────────────────────── -->
-<main id="panel-chat" class="panel">
-  <div class="chat-wrap card">
-    <div id="chat-log" class="chat-log">
-      <div class="msg agent" data-i18n="chat_welcome"></div>
+  <!-- ============ BENEFITS ============ -->
+  <section class="section" id="benefits">
+    <div class="section-head reveal">
+      <h2>Sürücülərin<br>Etibar Etdiyi Alət</h2>
+      <div class="head-side">
+        Son texnologiyalarla işləyən platformamız sürətli və dəqiq zədə qiymətləndirməsi təqdim edir.
+      </div>
     </div>
-    <form id="chat-form" class="chat-input">
-      <input id="chat-text" type="text" autocomplete="off" data-i18n-ph="chat_placeholder">
-      <button type="submit" class="btn-primary" data-i18n="send"></button>
-    </form>
-    <p class="disclaimer" data-i18n="disclaimer"></p>
-  </div>
-</main>
+    <div class="trust-grid">
+      <div class="card reveal">
+        <svg class="card-art" viewBox="0 0 220 130" fill="none"><path d="M10 110 Q70 30 210 60" stroke="rgba(122,92,255,0.5)" stroke-width="1.5" stroke-dasharray="4 5"/><circle cx="150" cy="52" r="26" stroke="rgba(122,92,255,0.35)"/><circle cx="150" cy="52" r="14" stroke="rgba(122,92,255,0.55)"/></svg>
+        <div class="icon-chip"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+        <h3>Ani qiymətləndirmə</h3>
+        <p>Şəkli yükləyin, bir neçə saniyə ərzində təxmini təmir/əvəzləmə qiymətini alın.</p>
+      </div>
+      <div class="card reveal">
+        <svg class="card-art" viewBox="0 0 220 130" fill="none"><rect x="120" y="20" width="80" height="52" rx="8" stroke="rgba(122,92,255,0.4)"/><path d="M130 58 l14-16 12 10 16-20 14 12" stroke="rgba(122,92,255,0.7)" stroke-width="1.5"/></svg>
+        <div class="icon-chip"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-6"/></svg></div>
+        <h3>Dəqiq AI analiz</h3>
+        <p>İki ayrı görüntü modeli (hissə + zədə seqmentasiyası) birləşərək hər hissəni ayrıca qiymətləndirir.</p>
+      </div>
+      <div class="card reveal">
+        <svg class="card-art" viewBox="0 0 220 130" fill="none"><circle cx="160" cy="46" r="30" stroke="rgba(122,92,255,0.4)"/><path d="M160 30v16l10 8" stroke="rgba(122,92,255,0.7)" stroke-width="1.5"/></svg>
+        <div class="icon-chip"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+        <h3>Vaxta və pula qənaət</h3>
+        <p>Təmir və əvəzləmə variantlarını müqayisə edin, ən sərfəli qərarı seçin.</p>
+      </div>
+      <div class="card reveal">
+        <svg class="card-art" viewBox="0 0 220 130" fill="none"><path d="M115 100 C135 60 150 95 168 55 C180 30 196 70 214 40" stroke="rgba(122,92,255,0.6)" stroke-width="1.5"/><path d="M115 110 h100" stroke="rgba(255,255,255,0.12)"/></svg>
+        <div class="icon-chip"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        <h3>Bakı bazarına uyğun</h3>
+        <p>Qiymətlər analoq/işlənmiş hissə bazarına əsaslanır, marka/model/il üzrə fərqlənir.</p>
+      </div>
+    </div>
+  </section>
 
-<script src="/static/app.js"></script>
+  <!-- ============ STEPS ============ -->
+  <section class="section" id="how-it-works">
+    <div class="section-head reveal">
+      <h2>3 Sadə Addımda<br>Başlayın</h2>
+      <div class="head-side">
+        Şəkil yükləyin, avtomobilinizi seçin və dəqiqələr içində hesabat alın.
+        <br><a class="head-link" href="upload.html">Başla <span>→</span></a>
+      </div>
+    </div>
+    <div class="steps-grid">
+      <a class="step-card reveal" href="upload.html">
+        <div class="step-num"><span class="n">1</span><span class="line"></span></div>
+        <h3>Zədənin şəklini yükləyin</h3>
+        <p>Telefonla və ya kompüterdən şəkil yükləyin — yaxşı işıqlandırma kifayətdir.</p>
+        <div class="step-art">
+          <svg viewBox="0 0 300 160" width="86%" fill="none">
+            <rect x="60" y="20" width="180" height="110" rx="12" stroke="rgba(122,92,255,0.5)" stroke-dasharray="6 6"/>
+            <path d="M150 95V55m0 0l-16 16m16-16l16 16" stroke="#a08fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            <rect x="120" y="108" width="60" height="8" rx="4" fill="rgba(122,92,255,0.4)"/>
+          </svg>
+        </div>
+      </a>
+      <a class="step-card reveal" href="upload.html">
+        <div class="step-num"><span class="n">2</span><span class="line"></span></div>
+        <h3>Ani təmir qiyməti alın</h3>
+        <p>AI şəkilləri analiz edir və hər zədəli hissə üçün dəqiq qiymət hesablayır.</p>
+        <div class="step-art">
+          <svg viewBox="0 0 300 160" width="86%" fill="none">
+            <path d="M40 118 C60 118 58 96 84 96 S 110 60 150 60 s 66 12 84 12 c 14 0 20 8 26 16 v 30 z" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/>
+            <circle cx="95" cy="120" r="15" fill="#0a0a10" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
+            <circle cx="215" cy="120" r="15" fill="#0a0a10" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
+            <circle cx="196" cy="70" r="12" fill="rgba(233,61,130,0.25)" stroke="#e93d82" stroke-width="1.5"/>
+            <path d="M196 64v7m0 3.5v.5" stroke="#e93d82" stroke-width="1.8" stroke-linecap="round"/>
+            <rect x="216" y="34" width="66" height="22" rx="6" fill="#15151d" stroke="rgba(122,92,255,0.5)"/>
+            <text x="249" y="49" fill="#cfc6ff" font-size="11" font-family="Inter, sans-serif" text-anchor="middle">280 AZN</text>
+          </svg>
+        </div>
+      </a>
+      <a class="step-card reveal" href="chat.html">
+        <div class="step-num"><span class="n">3</span><span class="line"></span></div>
+        <h3>Hissə qiymətini soruşun</h3>
+        <p>Qiymət çatında marka/model/il yazın — konkret hissələrin qiymətini dərhal öyrənin.</p>
+        <div class="step-art">
+          <svg viewBox="0 0 300 160" width="86%" fill="none">
+            <rect x="70" y="26" width="160" height="34" rx="9" fill="#15151d" stroke="rgba(255,255,255,0.15)"/>
+            <rect x="70" y="70" width="160" height="34" rx="9" fill="rgba(90,74,227,0.2)" stroke="rgba(122,92,255,0.6)"/>
+            <circle cx="90" cy="87" r="9" fill="#5b5bf0"/>
+            <path d="M86 87l3 3 5-6" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            <rect x="106" y="82" width="80" height="9" rx="4.5" fill="rgba(255,255,255,0.25)"/>
+            <circle cx="90" cy="43" r="9" stroke="rgba(255,255,255,0.3)"/>
+            <rect x="106" y="38" width="60" height="9" rx="4.5" fill="rgba(255,255,255,0.12)"/>
+          </svg>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- ============ TECHNOLOGY ============ -->
+  <section class="section" id="technologies">
+    <div class="tech-wrap">
+      <div class="reveal">
+        <h2 style="font-family: var(--font-display); font-size: clamp(28px,3.4vw,42px); font-weight:600; line-height:1.18;">Etibarlı<br>Texnologiya</h2>
+        <p style="color: var(--text-dim); margin-top: 20px; max-width: 380px;">Hissə seqmentasiyası və zədə seqmentasiyası üçün ayrıca YOLO11 modelləri, IoU əsaslı füzyon və qayda-əsaslı təmir/əvəzləmə mühərriki.</p>
+        <a class="head-link" href="#key-features">Ətraflı <span>→</span></a>
+      </div>
+      <div class="tech-list" id="key-features">
+        <div class="tech-item reveal">
+          <div class="t-head">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a4 4 0 014 4c0 1.1-.45 2.1-1.17 2.83A4 4 0 0112 22a4 4 0 01-2.83-6.83A4 4 0 0112 2z"/></svg>
+            İki modelli görüntü analizi
+          </div>
+          <p>Hissə model (parts-seg) və zədə modeli (CarDD) ayrıca işləyir, nəticələr maska IoU-su ilə birləşdirilir — hər tapıntı konkret hissəyə bağlanır.</p>
+        </div>
+        <div class="tech-item reveal">
+          <div class="t-head">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+            Rəqəmlər həmişə etibarlı mənbədən
+          </div>
+          <p>Qiymət hesablamasını heç vaxt AI etmir — bütün cəmlər CSV qiymət bazasından Python kodu ilə hesablanır.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ STATS ============ -->
+  <section class="stats-section">
+    <div class="stats-car reveal">
+      <svg viewBox="0 0 640 260" fill="none">
+        <defs>
+          <linearGradient id="wire" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#6db1ff"/><stop offset="1" stop-color="#3a5bff"/>
+          </linearGradient>
+        </defs>
+        <g stroke="url(#wire)" stroke-width="1.3" opacity="0.95">
+          <path d="M90 170 C110 168 120 150 150 138 C200 118 240 96 320 96 C400 96 450 118 490 138 C520 152 540 166 552 170 C560 178 556 196 540 198 L110 198 C92 196 84 180 90 170 Z"/>
+          <path d="M180 136 C220 112 260 104 320 104 C380 104 420 114 456 134" opacity="0.7"/>
+          <path d="M208 134 L216 100 M320 96 L320 130 M432 132 L424 102" opacity="0.5"/>
+          <path d="M150 138 h340 M120 160 h410" opacity="0.4"/>
+          <circle cx="180" cy="196" r="30"/><circle cx="180" cy="196" r="16" opacity="0.7"/>
+          <circle cx="460" cy="196" r="30"/><circle cx="460" cy="196" r="16" opacity="0.7"/>
+          <path d="M90 170 l-14 4 M552 170 l16 2" opacity="0.6"/>
+          <path d="M100 150 L60 60 M240 100 L200 20 M400 100 L440 24 M540 156 L590 66" stroke-dasharray="3 6" opacity="0.5"/>
+          <circle cx="60" cy="60" r="3" fill="#6db1ff"/><circle cx="200" cy="20" r="3" fill="#6db1ff"/><circle cx="440" cy="24" r="3" fill="#6db1ff"/><circle cx="590" cy="66" r="3" fill="#6db1ff"/>
+        </g>
+      </svg>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer" id="footer">
+    <div class="footer-grid">
+      <div>
+        <a class="brand" href="index.html">
+          <span class="brand-mark">
+            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.6L22 12l-7.6 2.4L12 22l-2.4-7.6L2 12l7.6-2.4z"/></svg>
+          </span>
+          CrashLogic
+        </a>
+        <p class="f-about">Bakı bazarı üçün AI-əsaslı avtomobil zədə qiymətləndirmə platforması.</p>
+      </div>
+      <div>
+        <h5>Menyu</h5>
+        <ul>
+          <li><a href="#benefits">Üstünlüklər</a></li>
+          <li><a href="#how-it-works">Necə işləyir</a></li>
+          <li><a href="#technologies">Texnologiya</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Məhsul</h5>
+        <ul>
+          <li><a href="upload.html">Zədə analizi</a></li>
+          <li><a href="chat.html">Qiymət çatı</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 CrashLogic — Bütün hüquqlar qorunur.</span>
+      <span>ℹ️ Qiymətlər təxminidir (Bakı bazarı, analoq/işlənmiş hissələr)</span>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
 </body>
 </html>

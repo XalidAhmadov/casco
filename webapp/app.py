@@ -30,7 +30,6 @@ except ImportError:
 os.environ.setdefault("CSV_PATH", str(ROOT / "car_parts_prices.csv"))
 
 from fastapi import FastAPI, File, Form, HTTPException, UploadFile
-from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
@@ -98,24 +97,41 @@ def get_pipeline():
 
 
 @app.post("/api/analyze")
-async def analyze(image: UploadFile = File(...),
+async def analyze(images: list[UploadFile] = File(...),
                   brand: str = Form(...),
                   model: str = Form(...),
                   year: int = Form(...)):
     pipe = get_pipeline()
-    suffix = Path(image.filename or "upload.jpg").suffix.lower() or ".jpg"
     uid = uuid.uuid4().hex[:12]
-    img_path = OUTPUTS / f"{uid}_src{suffix}"
-    img_path.write_bytes(await image.read())
-    ann_path = OUTPUTS / f"{uid}_annotated.jpg"
+    img_paths, ann_paths = [], []
+    for i, image in enumerate(images):
+        suffix = Path(image.filename or "upload.jpg").suffix.lower() or ".jpg"
+        img_path = OUTPUTS / f"{uid}_{i}_src{suffix}"
+        img_path.write_bytes(await image.read())
+        img_paths.append(str(img_path))
+        ann_paths.append(str(OUTPUTS / f"{uid}_{i}_annotated.jpg"))
+
     try:
-        res = pipe.analyze(str(img_path), brand, model, year,
-                           annotate_path=str(ann_path))
+        if len(img_paths) == 1:
+            res = pipe.analyze(img_paths[0], brand, model, year,
+                               annotate_path=ann_paths[0])
+            res.setdefault("per_image", [{"image": img_paths[0],
+                                          "annotated_path": ann_paths[0]}])
+        else:
+            res = pipe.analyze_many(img_paths, brand, model, year,
+                                    annotate_paths=ann_paths)
     except Exception as e:
         raise HTTPException(500, f"Analiz xətası: {e}")
+
     res = _jsonable(res)
-    res["annotated_url"] = f"/outputs/{ann_path.name}" if ann_path.exists() else None
-    res["source_url"] = f"/outputs/{img_path.name}"
+    for pi in res.get("per_image", []):
+        ann = Path(pi["annotated_path"]) if pi.get("annotated_path") else None
+        pi["annotated_url"] = f"/outputs/{ann.name}" if ann and ann.exists() else None
+        pi["source_url"] = f"/outputs/{Path(pi['image']).name}"
+    # top-level fields kept for backward compatibility (first photo)
+    first = res["per_image"][0] if res.get("per_image") else {}
+    res["annotated_url"] = first.get("annotated_url")
+    res["source_url"] = first.get("source_url")
     return res
 
 
@@ -188,11 +204,7 @@ def chat(req: ChatReq):
     return {"reply": resp.text or ""}
 
 
-# ── static frontend ───────────────────────────────────────────────────────
-app.mount("/static", StaticFiles(directory=WEBAPP / "static"), name="static")
+# ── static frontend (multi-page: index/upload/dashboard/chat) ─────────────
+# Mounted last so /api/* and /outputs/* routes above take precedence.
 app.mount("/outputs", StaticFiles(directory=OUTPUTS), name="outputs")
-
-
-@app.get("/")
-def index():
-    return FileResponse(WEBAPP / "static" / "index.html")
+app.mount("/", StaticFiles(directory=WEBAPP / "static", html=True), name="static")

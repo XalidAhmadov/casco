@@ -143,6 +143,27 @@ def fuse(part_dets: list, damage_dets: list) -> tuple[list, list]:
     return list(findings.values()), orphans
 
 
+def merge_findings(findings_lists: list) -> list:
+    """Merge findings from several photos of the SAME damaged vehicle.
+
+    Different photos often frame the same physical part (e.g. the front
+    bumper shot both head-on and from the side), which would otherwise be
+    priced/repaired twice. We dedupe by part_code alone (unlike fuse(),
+    which also keys on damage_type within a single image) so every part
+    contributes exactly one line to the final report, keeping whichever
+    photo showed the worst damage for it.
+    """
+    sev_rank = {"minor": 0, "moderate": 1, "severe": 2}
+    merged = {}
+    for findings in findings_lists:
+        for f in findings:
+            code = f["part_code"]
+            prev = merged.get(code)
+            if prev is None or sev_rank[f["severity"]] > sev_rank[prev["severity"]]:
+                merged[code] = f
+    return list(merged.values())
+
+
 def dets_from_ultralytics(result, names: dict) -> list:
     """Convert one ultralytics segmentation Result to our det format.
     Masks are upscaled by ultralytics to the input size; we use them as-is."""
@@ -190,6 +211,18 @@ def _selftest():
                for f in findings)
     assert any(f["part_code"] == "left_headlight" for f in findings)
     assert len(orphans) == 1
+
+    # a second photo re-detects the same bumper, now with severe damage —
+    # merge_findings must keep ONE bumper line (the worse one), not two.
+    findings2, _ = fuse(parts, [
+        {"class_name": "scratch", "mask": rect(75, 100, 0, 100), "confidence": 0.88},
+    ])
+    merged = merge_findings([findings, findings2])
+    bumper_lines = [f for f in merged if f["part_code"] == "front_bumper_cover"]
+    assert len(bumper_lines) == 1 and bumper_lines[0]["severity"] == "severe"
+    assert len(merged) == len(findings)  # no new parts introduced, just re-priced
+    print("merge_findings OK")
+
     print("selftest OK")
 
 
