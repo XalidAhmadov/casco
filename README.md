@@ -308,3 +308,17 @@ CrashLogic · Data & AI · 2026
 
 GitHub Organization · Project Board
 
+## Photos-Detector
+---
+
+![alt text](<Screenshot 2026-07-15 131146.png>)
+![alt text](<Screenshot 2026-07-15 131248.png>)
+
+
+## Photos-Chatbot
+---
+![alt text](image.png)
+
+## Resource Images
+---
+![alt text](<WhatsApp Image 2026-07-02 at 14.32.47 (1).jpeg>)    ![alt text](<WhatsApp Image 2026-07-02 at 14.32.47.jpeg>)
