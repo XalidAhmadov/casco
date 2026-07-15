@@ -306,8 +306,6 @@ CrashLogic · Data & AI · 2026
 - Ravan Khanbabayev
 - Khalid Ahmadov
 
-GitHub Organization · Project Board
-
 ## Photos-Detector
 ---
 
